@@ -1,0 +1,893 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.1
+  name: nodepoolmanagers.k8smanagers.greyridge.com
+spec:
+  group: k8smanagers.greyridge.com
+  names:
+    kind: NodePoolManager
+    listKind: NodePoolManagerList
+    plural: nodepoolmanagers
+    singular: nodepoolmanager
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: NodePoolManager is the Schema for the nodepoolmanagers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NodePoolManagerSpec defines the desired state of NodePoolManager
+            properties:
+              clusterName:
+                type: string
+              nodePools:
+                items:
+                  properties:
+                    action:
+                      type: string
+                    name:
+                      type: string
+                    properties:
+                      description: ManagedClusterAgentPoolProfileProperties - Properties
+                        for the container service agent pool profile.
+                      properties:
+                        availabilityZones:
+                          description: The list of Availability zones to use for nodes.
+                            This can only be specified if the AgentPoolType property
+                            is 'VirtualMachineScaleSets'.
+                          items:
+                            type: string
+                          type: array
+                        count:
+                          description: |-
+                            Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user
+                            pools and in the range of 1 to 1000 (inclusive) for system pools. The default
+                            value is 1.
+                          format: int32
+                          type: integer
+                        creationData:
+                          description: CreationData to be used to specify the source
+                            Snapshot ID if the node pool will be created/upgraded
+                            using a snapshot.
+                          properties:
+                            sourceResourceId:
+                              description: This is the ARM ID of the source object
+                                to be used to create the target object.
+                              type: string
+                          type: object
+                        currentOrchestratorVersion:
+                          description: |-
+                            READ-ONLY; If orchestratorVersion is a fully specified version , this field will be exactly equal to it. If orchestratorVersion
+                            is , this field will contain the full version being used.
+                          type: string
+                        enableAutoScaling:
+                          description: Whether to enable auto-scaler
+                          type: boolean
+                        enableEncryptionAtHost:
+                          description: 'This is only supported on certain VM sizes
+                            and in certain Azure regions. For more information, see:
+                            https://docs.microsoft.com/azure/aks/enable-host-encryption'
+                          type: boolean
+                        enableFIPS:
+                          description: |-
+                            See Add a FIPS-enabled node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview]
+                            for more details.
+                          type: boolean
+                        enableNodePublicIP:
+                          description: |-
+                            Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is
+                            for gaming workloads, where a console needs to make a direct connection to a
+                            cloud virtual machine to minimize hops. For more information see assigning a public IP per node
+                            [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools]. The default
+                            is false.
+                          type: boolean
+                        enableUltraSSD:
+                          description: Whether to enable UltraSSD
+                          type: boolean
+                        gpuInstanceProfile:
+                          description: GPUInstanceProfile to be used to specify GPU
+                            MIG instance profile for supported GPU VM SKU.
+                          type: string
+                        kubeletConfig:
+                          description: The Kubelet configuration on the agent pool
+                            nodes.
+                          properties:
+                            allowedUnsafeSysctls:
+                              description: Allowed list of unsafe sysctls or unsafe
+                                sysctl patterns (ending in *).
+                              items:
+                                type: string
+                              type: array
+                            containerLogMaxFiles:
+                              description: The maximum number of container log files
+                                that can be present for a container. The number must
+                                be ≥ 2.
+                              format: int32
+                              type: integer
+                            containerLogMaxSizeMB:
+                              description: The maximum size (e.g. 10Mi) of container
+                                log file before it is rotated.
+                              format: int32
+                              type: integer
+                            cpuCfsQuota:
+                              description: The default is true.
+                              type: boolean
+                            cpuCfsQuotaPeriod:
+                              description: |-
+                                The default is '100ms.' Valid values are a sequence of decimal numbers with an optional fraction and a unit suffix. For
+                                example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's', 'm', and
+                                'h'.
+                              type: string
+                            cpuManagerPolicy:
+                              description: |-
+                                The default is 'none'. See Kubernetes CPU management policies [https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies]
+                                for more information. Allowed
+                                values are 'none' and 'static'.
+                              type: string
+                            failSwapOn:
+                              description: If set to true it will make the Kubelet
+                                fail to start if swap is enabled on the node.
+                              type: boolean
+                            imageGcHighThreshold:
+                              description: To disable image garbage collection, set
+                                to 100. The default is 85%
+                              format: int32
+                              type: integer
+                            imageGcLowThreshold:
+                              description: This cannot be set higher than imageGcHighThreshold.
+                                The default is 80%
+                              format: int32
+                              type: integer
+                            podMaxPids:
+                              description: The maximum number of processes per pod.
+                              format: int32
+                              type: integer
+                            topologyManagerPolicy:
+                              description: |-
+                                For more information see Kubernetes Topology Manager [https://kubernetes.io/docs/tasks/administer-cluster/topology-manager].
+                                The default is 'none'. Allowed values are 'none', 'best-effort',
+                                'restricted', and 'single-numa-node'.
+                              type: string
+                          type: object
+                        kubeletDiskType:
+                          description: Determines the placement of emptyDir volumes,
+                            container runtime data root, and Kubelet ephemeral storage.
+                          type: string
+                        linuxOSConfig:
+                          description: The OS configuration of Linux agent nodes.
+                          properties:
+                            swapFileSizeMB:
+                              description: The size in MB of a swap file that will
+                                be created on each node.
+                              format: int32
+                              type: integer
+                            sysctls:
+                              description: Sysctl settings for Linux agent nodes.
+                              properties:
+                                fsAioMaxNr:
+                                  description: Sysctl setting fs.aio-max-nr.
+                                  format: int32
+                                  type: integer
+                                fsFileMax:
+                                  description: Sysctl setting fs.file-max.
+                                  format: int32
+                                  type: integer
+                                fsInotifyMaxUserWatches:
+                                  description: Sysctl setting fs.inotify.maxuserwatches.
+                                  format: int32
+                                  type: integer
+                                fsNrOpen:
+                                  description: Sysctl setting fs.nr_open.
+                                  format: int32
+                                  type: integer
+                                kernelThreadsMax:
+                                  description: Sysctl setting kernel.threads-max.
+                                  format: int32
+                                  type: integer
+                                netCoreNetdevMaxBacklog:
+                                  description: Sysctl setting net.core.netdevmaxbacklog.
+                                  format: int32
+                                  type: integer
+                                netCoreOptmemMax:
+                                  description: Sysctl setting net.core.optmem_max.
+                                  format: int32
+                                  type: integer
+                                netCoreRmemDefault:
+                                  description: Sysctl setting net.core.rmem_default.
+                                  format: int32
+                                  type: integer
+                                netCoreRmemMax:
+                                  description: Sysctl setting net.core.rmem_max.
+                                  format: int32
+                                  type: integer
+                                netCoreSomaxconn:
+                                  description: Sysctl setting net.core.somaxconn.
+                                  format: int32
+                                  type: integer
+                                netCoreWmemDefault:
+                                  description: Sysctl setting net.core.wmem_default.
+                                  format: int32
+                                  type: integer
+                                netCoreWmemMax:
+                                  description: Sysctl setting net.core.wmem_max.
+                                  format: int32
+                                  type: integer
+                                netIpv4IpLocalPortRange:
+                                  description: Sysctl setting net.ipv4.iplocalport_range.
+                                  type: string
+                                netIpv4NeighDefaultGcThresh1:
+                                  description: Sysctl setting net.ipv4.neigh.default.gc_thresh1.
+                                  format: int32
+                                  type: integer
+                                netIpv4NeighDefaultGcThresh2:
+                                  description: Sysctl setting net.ipv4.neigh.default.gc_thresh2.
+                                  format: int32
+                                  type: integer
+                                netIpv4NeighDefaultGcThresh3:
+                                  description: Sysctl setting net.ipv4.neigh.default.gc_thresh3.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpFinTimeout:
+                                  description: Sysctl setting net.ipv4.tcpfintimeout.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpKeepaliveProbes:
+                                  description: Sysctl setting net.ipv4.tcpkeepaliveprobes.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpKeepaliveTime:
+                                  description: Sysctl setting net.ipv4.tcpkeepalivetime.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpMaxSynBacklog:
+                                  description: Sysctl setting net.ipv4.tcpmaxsyn_backlog.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpMaxTwBuckets:
+                                  description: Sysctl setting net.ipv4.tcpmaxtw_buckets.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpTwReuse:
+                                  description: Sysctl setting net.ipv4.tcptwreuse.
+                                  type: boolean
+                                netIpv4TcpkeepaliveIntvl:
+                                  description: Sysctl setting net.ipv4.tcpkeepaliveintvl.
+                                  format: int32
+                                  type: integer
+                                netNetfilterNfConntrackBuckets:
+                                  description: Sysctl setting net.netfilter.nfconntrackbuckets.
+                                  format: int32
+                                  type: integer
+                                netNetfilterNfConntrackMax:
+                                  description: Sysctl setting net.netfilter.nfconntrackmax.
+                                  format: int32
+                                  type: integer
+                                vmMaxMapCount:
+                                  description: Sysctl setting vm.maxmapcount.
+                                  format: int32
+                                  type: integer
+                                vmSwappiness:
+                                  description: Sysctl setting vm.swappiness.
+                                  format: int32
+                                  type: integer
+                                vmVfsCachePressure:
+                                  description: Sysctl setting vm.vfscachepressure.
+                                  format: int32
+                                  type: integer
+                              type: object
+                            transparentHugePageDefrag:
+                              description: |-
+                                Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more information
+                                see Transparent Hugepages
+                                [https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge].
+                              type: string
+                            transparentHugePageEnabled:
+                              description: |-
+                                Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see Transparent Hugepages
+                                [https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge].
+                              type: string
+                          type: object
+                        maxCount:
+                          description: The maximum number of nodes for auto-scaling
+                          format: int32
+                          type: integer
+                        maxPods:
+                          description: The maximum number of pods that can run on
+                            a node.
+                          format: int32
+                          type: integer
+                        minCount:
+                          description: The minimum number of nodes for auto-scaling
+                          format: int32
+                          type: integer
+                        mode:
+                          description: |-
+                            A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions
+                            and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools
+                          type: string
+                        nodeImageVersion:
+                          description: READ-ONLY; The version of node image
+                          type: string
+                        nodeLabels:
+                          additionalProperties:
+                            type: string
+                          description: The node labels to be persisted across all
+                            nodes in agent pool.
+                          type: object
+                        nodePublicIPPrefixID:
+                          description: 'This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}'
+                          type: string
+                        nodeTaints:
+                          description: The taints added to new nodes during node pool
+                            create and scale. For example, key=value:NoSchedule.
+                          items:
+                            type: string
+                          type: array
+                        orchestratorVersion:
+                          description: |-
+                            Both patch version (e.g. 1.20.13) and (e.g. 1.20) are supported. When is specified, the latest supported GA patch version
+                            is chosen automatically. Updating the cluster with the same once it has been
+                            created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if a newer patch version is available. As a best practice,
+                            you should upgrade all node pools in an AKS cluster to the same Kubernetes
+                            version. The node pool version must have the same major version as the control plane. The node pool minor version must
+                            be within two minor versions of the control plane version. The node pool version
+                            cannot be greater than the control plane version. For more information see upgrading a node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool].
+                          type: string
+                        osDiskSizeGB:
+                          description: |-
+                            OS Disk Size in GB to be used to specify the disk size for every machine in the master/agent pool. If you specify 0, it
+                            will apply the default osDisk size according to the vmSize specified.
+                          format: int32
+                          type: integer
+                        osDiskType:
+                          description: |-
+                            The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise,
+                            defaults to 'Managed'. May not be changed after creation. For more information
+                            see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
+                          type: string
+                        osSKU:
+                          description: Specifies an OS SKU. This value must not be
+                            specified if OSType is Windows.
+                          type: string
+                        osType:
+                          description: The operating system type. The default is Linux.
+                          type: string
+                        podSubnetID:
+                          description: |-
+                            If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
+                            /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
+                          type: string
+                        powerState:
+                          description: |-
+                            When an Agent Pool is first created it is initially Running. The Agent Pool can be stopped by setting this field to Stopped.
+                            A stopped Agent Pool stops all of its VMs and does not accrue billing
+                            charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded
+                          properties:
+                            code:
+                              description: Tells whether the cluster is Running or
+                                Stopped
+                              type: string
+                          type: object
+                        provisioningState:
+                          description: READ-ONLY; The current deployment or provisioning
+                            state.
+                          type: string
+                        proximityPlacementGroupID:
+                          description: The ID for Proximity Placement Group.
+                          type: string
+                        scaleDownMode:
+                          description: This also effects the cluster autoscaler behavior.
+                            If not specified, it defaults to Delete.
+                          type: string
+                        scaleSetEvictionPolicy:
+                          description: This cannot be specified unless the scaleSetPriority
+                            is 'Spot'. If not specified, the default is 'Delete'.
+                          type: string
+                        scaleSetPriority:
+                          description: The Virtual Machine Scale Set priority. If
+                            not specified, the default is 'Regular'.
+                          type: string
+                        spotMaxPrice:
+                          description: |-
+                            Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price.
+                            For more details on spot pricing, see spot VMs pricing
+                            [https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing]
+                          type: number
+                        tags:
+                          additionalProperties:
+                            type: string
+                          description: The tags to be persisted on the agent pool
+                            virtual machine scale set.
+                          type: object
+                        type:
+                          description: The type of Agent Pool.
+                          type: string
+                        upgradeSettings:
+                          description: Settings for upgrading the agentpool
+                          properties:
+                            maxSurge:
+                              description: |-
+                                This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage
+                                of the total agent pool size at the time of the upgrade. For
+                                percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including best
+                                practices, see:
+                                https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade
+                              type: string
+                          type: object
+                        vmSize:
+                          description: |-
+                            VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might
+                            fail to run correctly. For more details on restricted VM sizes, see:
+                            https://docs.microsoft.com/azure/aks/quotas-skus-regions
+                          type: string
+                        vnetSubnetID:
+                          description: |-
+                            If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to
+                            nodes and pods, otherwise it applies to just nodes. This is of the form:
+                            /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
+                          type: string
+                        workloadRuntime:
+                          description: Determines the type of workload a node can
+                            run.
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              resourceGroup:
+                type: string
+              retryOnError:
+                type: boolean
+              subscriptionId:
+                type: string
+              testMode:
+                type: boolean
+            required:
+            - nodePools
+            type: object
+          status:
+            description: NodePoolManagerStatus defines the observed state of NodePoolManager
+            properties:
+              clusterVersion:
+                type: string
+              nodePools:
+                items:
+                  properties:
+                    action:
+                      type: string
+                    name:
+                      type: string
+                    properties:
+                      description: ManagedClusterAgentPoolProfileProperties - Properties
+                        for the container service agent pool profile.
+                      properties:
+                        availabilityZones:
+                          description: The list of Availability zones to use for nodes.
+                            This can only be specified if the AgentPoolType property
+                            is 'VirtualMachineScaleSets'.
+                          items:
+                            type: string
+                          type: array
+                        count:
+                          description: |-
+                            Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user
+                            pools and in the range of 1 to 1000 (inclusive) for system pools. The default
+                            value is 1.
+                          format: int32
+                          type: integer
+                        creationData:
+                          description: CreationData to be used to specify the source
+                            Snapshot ID if the node pool will be created/upgraded
+                            using a snapshot.
+                          properties:
+                            sourceResourceId:
+                              description: This is the ARM ID of the source object
+                                to be used to create the target object.
+                              type: string
+                          type: object
+                        currentOrchestratorVersion:
+                          description: |-
+                            READ-ONLY; If orchestratorVersion is a fully specified version , this field will be exactly equal to it. If orchestratorVersion
+                            is , this field will contain the full version being used.
+                          type: string
+                        enableAutoScaling:
+                          description: Whether to enable auto-scaler
+                          type: boolean
+                        enableEncryptionAtHost:
+                          description: 'This is only supported on certain VM sizes
+                            and in certain Azure regions. For more information, see:
+                            https://docs.microsoft.com/azure/aks/enable-host-encryption'
+                          type: boolean
+                        enableFIPS:
+                          description: |-
+                            See Add a FIPS-enabled node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview]
+                            for more details.
+                          type: boolean
+                        enableNodePublicIP:
+                          description: |-
+                            Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is
+                            for gaming workloads, where a console needs to make a direct connection to a
+                            cloud virtual machine to minimize hops. For more information see assigning a public IP per node
+                            [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools]. The default
+                            is false.
+                          type: boolean
+                        enableUltraSSD:
+                          description: Whether to enable UltraSSD
+                          type: boolean
+                        gpuInstanceProfile:
+                          description: GPUInstanceProfile to be used to specify GPU
+                            MIG instance profile for supported GPU VM SKU.
+                          type: string
+                        kubeletConfig:
+                          description: The Kubelet configuration on the agent pool
+                            nodes.
+                          properties:
+                            allowedUnsafeSysctls:
+                              description: Allowed list of unsafe sysctls or unsafe
+                                sysctl patterns (ending in *).
+                              items:
+                                type: string
+                              type: array
+                            containerLogMaxFiles:
+                              description: The maximum number of container log files
+                                that can be present for a container. The number must
+                                be ≥ 2.
+                              format: int32
+                              type: integer
+                            containerLogMaxSizeMB:
+                              description: The maximum size (e.g. 10Mi) of container
+                                log file before it is rotated.
+                              format: int32
+                              type: integer
+                            cpuCfsQuota:
+                              description: The default is true.
+                              type: boolean
+                            cpuCfsQuotaPeriod:
+                              description: |-
+                                The default is '100ms.' Valid values are a sequence of decimal numbers with an optional fraction and a unit suffix. For
+                                example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's', 'm', and
+                                'h'.
+                              type: string
+                            cpuManagerPolicy:
+                              description: |-
+                                The default is 'none'. See Kubernetes CPU management policies [https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies]
+                                for more information. Allowed
+                                values are 'none' and 'static'.
+                              type: string
+                            failSwapOn:
+                              description: If set to true it will make the Kubelet
+                                fail to start if swap is enabled on the node.
+                              type: boolean
+                            imageGcHighThreshold:
+                              description: To disable image garbage collection, set
+                                to 100. The default is 85%
+                              format: int32
+                              type: integer
+                            imageGcLowThreshold:
+                              description: This cannot be set higher than imageGcHighThreshold.
+                                The default is 80%
+                              format: int32
+                              type: integer
+                            podMaxPids:
+                              description: The maximum number of processes per pod.
+                              format: int32
+                              type: integer
+                            topologyManagerPolicy:
+                              description: |-
+                                For more information see Kubernetes Topology Manager [https://kubernetes.io/docs/tasks/administer-cluster/topology-manager].
+                                The default is 'none'. Allowed values are 'none', 'best-effort',
+                                'restricted', and 'single-numa-node'.
+                              type: string
+                          type: object
+                        kubeletDiskType:
+                          description: Determines the placement of emptyDir volumes,
+                            container runtime data root, and Kubelet ephemeral storage.
+                          type: string
+                        linuxOSConfig:
+                          description: The OS configuration of Linux agent nodes.
+                          properties:
+                            swapFileSizeMB:
+                              description: The size in MB of a swap file that will
+                                be created on each node.
+                              format: int32
+                              type: integer
+                            sysctls:
+                              description: Sysctl settings for Linux agent nodes.
+                              properties:
+                                fsAioMaxNr:
+                                  description: Sysctl setting fs.aio-max-nr.
+                                  format: int32
+                                  type: integer
+                                fsFileMax:
+                                  description: Sysctl setting fs.file-max.
+                                  format: int32
+                                  type: integer
+                                fsInotifyMaxUserWatches:
+                                  description: Sysctl setting fs.inotify.maxuserwatches.
+                                  format: int32
+                                  type: integer
+                                fsNrOpen:
+                                  description: Sysctl setting fs.nr_open.
+                                  format: int32
+                                  type: integer
+                                kernelThreadsMax:
+                                  description: Sysctl setting kernel.threads-max.
+                                  format: int32
+                                  type: integer
+                                netCoreNetdevMaxBacklog:
+                                  description: Sysctl setting net.core.netdevmaxbacklog.
+                                  format: int32
+                                  type: integer
+                                netCoreOptmemMax:
+                                  description: Sysctl setting net.core.optmem_max.
+                                  format: int32
+                                  type: integer
+                                netCoreRmemDefault:
+                                  description: Sysctl setting net.core.rmem_default.
+                                  format: int32
+                                  type: integer
+                                netCoreRmemMax:
+                                  description: Sysctl setting net.core.rmem_max.
+                                  format: int32
+                                  type: integer
+                                netCoreSomaxconn:
+                                  description: Sysctl setting net.core.somaxconn.
+                                  format: int32
+                                  type: integer
+                                netCoreWmemDefault:
+                                  description: Sysctl setting net.core.wmem_default.
+                                  format: int32
+                                  type: integer
+                                netCoreWmemMax:
+                                  description: Sysctl setting net.core.wmem_max.
+                                  format: int32
+                                  type: integer
+                                netIpv4IpLocalPortRange:
+                                  description: Sysctl setting net.ipv4.iplocalport_range.
+                                  type: string
+                                netIpv4NeighDefaultGcThresh1:
+                                  description: Sysctl setting net.ipv4.neigh.default.gc_thresh1.
+                                  format: int32
+                                  type: integer
+                                netIpv4NeighDefaultGcThresh2:
+                                  description: Sysctl setting net.ipv4.neigh.default.gc_thresh2.
+                                  format: int32
+                                  type: integer
+                                netIpv4NeighDefaultGcThresh3:
+                                  description: Sysctl setting net.ipv4.neigh.default.gc_thresh3.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpFinTimeout:
+                                  description: Sysctl setting net.ipv4.tcpfintimeout.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpKeepaliveProbes:
+                                  description: Sysctl setting net.ipv4.tcpkeepaliveprobes.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpKeepaliveTime:
+                                  description: Sysctl setting net.ipv4.tcpkeepalivetime.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpMaxSynBacklog:
+                                  description: Sysctl setting net.ipv4.tcpmaxsyn_backlog.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpMaxTwBuckets:
+                                  description: Sysctl setting net.ipv4.tcpmaxtw_buckets.
+                                  format: int32
+                                  type: integer
+                                netIpv4TcpTwReuse:
+                                  description: Sysctl setting net.ipv4.tcptwreuse.
+                                  type: boolean
+                                netIpv4TcpkeepaliveIntvl:
+                                  description: Sysctl setting net.ipv4.tcpkeepaliveintvl.
+                                  format: int32
+                                  type: integer
+                                netNetfilterNfConntrackBuckets:
+                                  description: Sysctl setting net.netfilter.nfconntrackbuckets.
+                                  format: int32
+                                  type: integer
+                                netNetfilterNfConntrackMax:
+                                  description: Sysctl setting net.netfilter.nfconntrackmax.
+                                  format: int32
+                                  type: integer
+                                vmMaxMapCount:
+                                  description: Sysctl setting vm.maxmapcount.
+                                  format: int32
+                                  type: integer
+                                vmSwappiness:
+                                  description: Sysctl setting vm.swappiness.
+                                  format: int32
+                                  type: integer
+                                vmVfsCachePressure:
+                                  description: Sysctl setting vm.vfscachepressure.
+                                  format: int32
+                                  type: integer
+                              type: object
+                            transparentHugePageDefrag:
+                              description: |-
+                                Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more information
+                                see Transparent Hugepages
+                                [https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge].
+                              type: string
+                            transparentHugePageEnabled:
+                              description: |-
+                                Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see Transparent Hugepages
+                                [https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge].
+                              type: string
+                          type: object
+                        maxCount:
+                          description: The maximum number of nodes for auto-scaling
+                          format: int32
+                          type: integer
+                        maxPods:
+                          description: The maximum number of pods that can run on
+                            a node.
+                          format: int32
+                          type: integer
+                        minCount:
+                          description: The minimum number of nodes for auto-scaling
+                          format: int32
+                          type: integer
+                        mode:
+                          description: |-
+                            A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions
+                            and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools
+                          type: string
+                        nodeImageVersion:
+                          description: READ-ONLY; The version of node image
+                          type: string
+                        nodeLabels:
+                          additionalProperties:
+                            type: string
+                          description: The node labels to be persisted across all
+                            nodes in agent pool.
+                          type: object
+                        nodePublicIPPrefixID:
+                          description: 'This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}'
+                          type: string
+                        nodeTaints:
+                          description: The taints added to new nodes during node pool
+                            create and scale. For example, key=value:NoSchedule.
+                          items:
+                            type: string
+                          type: array
+                        orchestratorVersion:
+                          description: |-
+                            Both patch version (e.g. 1.20.13) and (e.g. 1.20) are supported. When is specified, the latest supported GA patch version
+                            is chosen automatically. Updating the cluster with the same once it has been
+                            created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if a newer patch version is available. As a best practice,
+                            you should upgrade all node pools in an AKS cluster to the same Kubernetes
+                            version. The node pool version must have the same major version as the control plane. The node pool minor version must
+                            be within two minor versions of the control plane version. The node pool version
+                            cannot be greater than the control plane version. For more information see upgrading a node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool].
+                          type: string
+                        osDiskSizeGB:
+                          description: |-
+                            OS Disk Size in GB to be used to specify the disk size for every machine in the master/agent pool. If you specify 0, it
+                            will apply the default osDisk size according to the vmSize specified.
+                          format: int32
+                          type: integer
+                        osDiskType:
+                          description: |-
+                            The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise,
+                            defaults to 'Managed'. May not be changed after creation. For more information
+                            see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
+                          type: string
+                        osSKU:
+                          description: Specifies an OS SKU. This value must not be
+                            specified if OSType is Windows.
+                          type: string
+                        osType:
+                          description: The operating system type. The default is Linux.
+                          type: string
+                        podSubnetID:
+                          description: |-
+                            If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
+                            /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
+                          type: string
+                        powerState:
+                          description: |-
+                            When an Agent Pool is first created it is initially Running. The Agent Pool can be stopped by setting this field to Stopped.
+                            A stopped Agent Pool stops all of its VMs and does not accrue billing
+                            charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded
+                          properties:
+                            code:
+                              description: Tells whether the cluster is Running or
+                                Stopped
+                              type: string
+                          type: object
+                        provisioningState:
+                          description: READ-ONLY; The current deployment or provisioning
+                            state.
+                          type: string
+                        proximityPlacementGroupID:
+                          description: The ID for Proximity Placement Group.
+                          type: string
+                        scaleDownMode:
+                          description: This also effects the cluster autoscaler behavior.
+                            If not specified, it defaults to Delete.
+                          type: string
+                        scaleSetEvictionPolicy:
+                          description: This cannot be specified unless the scaleSetPriority
+                            is 'Spot'. If not specified, the default is 'Delete'.
+                          type: string
+                        scaleSetPriority:
+                          description: The Virtual Machine Scale Set priority. If
+                            not specified, the default is 'Regular'.
+                          type: string
+                        spotMaxPrice:
+                          description: |-
+                            Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price.
+                            For more details on spot pricing, see spot VMs pricing
+                            [https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing]
+                          type: number
+                        tags:
+                          additionalProperties:
+                            type: string
+                          description: The tags to be persisted on the agent pool
+                            virtual machine scale set.
+                          type: object
+                        type:
+                          description: The type of Agent Pool.
+                          type: string
+                        upgradeSettings:
+                          description: Settings for upgrading the agentpool
+                          properties:
+                            maxSurge:
+                              description: |-
+                                This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage
+                                of the total agent pool size at the time of the upgrade. For
+                                percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including best
+                                practices, see:
+                                https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade
+                              type: string
+                          type: object
+                        vmSize:
+                          description: |-
+                            VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might
+                            fail to run correctly. For more details on restricted VM sizes, see:
+                            https://docs.microsoft.com/azure/aks/quotas-skus-regions
+                          type: string
+                        vnetSubnetID:
+                          description: |-
+                            If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to
+                            nodes and pods, otherwise it applies to just nodes. This is of the form:
+                            /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
+                          type: string
+                        workloadRuntime:
+                          description: Determines the type of workload a node can
+                            run.
+                          type: string
+                      type: object
+                  type: object
+                type: array
+            required:
+            - nodePools
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

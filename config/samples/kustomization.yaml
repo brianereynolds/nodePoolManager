@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- create-np.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

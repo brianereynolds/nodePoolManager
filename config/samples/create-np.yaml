@@ -1,0 +1,35 @@
+apiVersion: k8smanagers.greyridge.com/v1
+kind: NodePoolManager
+metadata:
+  labels:
+    app.kubernetes.io/name: nodepoolmanager
+    app.kubernetes.io/managed-by: kustomize
+  name: nodepoolmanager-sample
+spec:
+  subscriptionId: "3e54eb54-946e-4ff4-a430-d7b190cd45cf"
+  resourceGroup: "node-upgrader"
+  clusterName: "lm-cluster"
+  retryOnError: false
+  testMode: false
+  nodePools:
+    - name: "servicesglas"
+      properties: {
+        orchestratorVersion: "1.28.5",
+        vmSize: "Standard_DS2_v2",
+        enableAutoScaling: true,
+        minCount: 0,
+        maxCount: 1,
+        availabilityZones: [ "1" ]
+      }
+    - name: "centralglas"
+      properties: {
+        orchestratorVersion: "1.28.5",
+        vmSize: "Standard_DS2_v2",
+        enableAutoScaling: true,
+        minCount: 0,
+        maxCount: 1,
+        availabilityZones: [ "2" ]
+      }
+
+
+

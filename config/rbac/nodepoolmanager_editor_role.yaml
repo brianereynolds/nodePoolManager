@@ -1,0 +1,27 @@
+# permissions for end users to edit nodepoolmanagers.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: nodepoolmanager
+    app.kubernetes.io/managed-by: kustomize
+  name: nodepoolmanager-editor-role
+rules:
+- apiGroups:
+  - k8smanagers.greyridge.com
+  resources:
+  - nodepoolmanagers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - k8smanagers.greyridge.com
+  resources:
+  - nodepoolmanagers/status
+  verbs:
+  - get
