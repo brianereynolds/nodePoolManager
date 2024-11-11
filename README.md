@@ -22,7 +22,7 @@ helm install nodepoolmanager .
 #### Verification
 ```
 helm list --filter 'nodepoolmanager' 
-kubectl get crd workloadmanagers.k8smanageers.greyridge.com
+kubectl get crd nodepoolmanager.k8smanagers.greyridge.com
 ```
 
 ### Uninstall
