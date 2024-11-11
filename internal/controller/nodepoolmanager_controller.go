@@ -485,27 +485,27 @@ func (r *NodePoolManagerReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 	requeue := npManager.Spec.RetryOnError
 
 	if err := r.populateStatus(ctx, &npManager); err != nil {
-		return ctrl.Result{Requeue: requeue}, nil
+		return ctrl.Result{Requeue: requeue}, err
 	}
 
 	if err := r.populateSpec(ctx, &npManager); err != nil {
-		return ctrl.Result{Requeue: requeue}, nil
+		return ctrl.Result{Requeue: requeue}, err
 	}
 
 	if err := r.validate(ctx, &npManager); err != nil {
-		return ctrl.Result{Requeue: requeue}, nil
+		return ctrl.Result{Requeue: requeue}, err
 	}
 
 	if err := r.createNodePools(ctx, &npManager); err != nil {
-		return ctrl.Result{Requeue: requeue}, nil
+		return ctrl.Result{Requeue: requeue}, err
 	}
 
 	if err := r.updateNodePools(ctx, &npManager); err != nil {
-		return ctrl.Result{Requeue: requeue}, nil
+		return ctrl.Result{Requeue: requeue}, err
 	}
 
 	if err := r.deleteNodePools(ctx, &npManager); err != nil {
-		return ctrl.Result{Requeue: requeue}, nil
+		return ctrl.Result{Requeue: requeue}, err
 	}
 
 	l.Info("Exit Reconcile")
