@@ -442,6 +442,7 @@ func (r *NodePoolManagerReconciler) validate(ctx context.Context, npManager *k8s
 			result, err := k8smanagers_utils.CompareVersions(npManager.Status.ClusterVersion, *np.Props.OrchestratorVersion)
 			if err != nil {
 				l.Error(err, "Version compare failed ")
+				return err
 			}
 			if result == -1 {
 				err := errors.New("the version of the node pool must not be greater than the Kubernetes version")
