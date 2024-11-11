@@ -4,5 +4,5 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: controller
-  newName: leitrim94.azurecr.io/node-pool-manager
+  newName: docker.io/brianereynolds/node-pool-manager
   newTag: latest

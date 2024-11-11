@@ -20,13 +20,14 @@ import (
 	"context"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/types"
-	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
+	"go.uber.org/zap/zapcore"
 	k8smanagersv1 "greyridge.com/nodePoolManager/api/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 var _ = Describe("NodePoolManager Controller", func() {
@@ -34,6 +35,9 @@ var _ = Describe("NodePoolManager Controller", func() {
 		const resourceName = "test-resource"
 
 		ctx := context.Background()
+
+		zapLogger := zap.New(zap.UseDevMode(true), zap.Level(zapcore.InfoLevel))
+		log.SetLogger(zapLogger)
 
 		typeNamespacedName := types.NamespacedName{
 			Name:      resourceName,
@@ -50,7 +54,14 @@ var _ = Describe("NodePoolManager Controller", func() {
 						Name:      resourceName,
 						Namespace: "default",
 					},
-					// TODO(user): Specify other spec details if needed.
+					Spec: k8smanagersv1.NodePoolManagerSpec{
+						SubscriptionID: "3e54eb54-946e-4ff4-a430-d7b190cd45cf",
+						ResourceGroup:  "node-upgrader",
+						ClusterName:    "lm-cluster",
+						RetryOnError:   false,
+						TestMode:       false,
+						NodePools:      []k8smanagersv1.NodePool{},
+					},
 				}
 				Expect(k8sClient.Create(ctx, resource)).To(Succeed())
 			}
@@ -75,6 +86,7 @@ var _ = Describe("NodePoolManager Controller", func() {
 			_, err := controllerReconciler.Reconcile(ctx, reconcile.Request{
 				NamespacedName: typeNamespacedName,
 			})
+
 			Expect(err).NotTo(HaveOccurred())
 			// TODO(user): Add more specific assertions depending on your controller's reconciliation logic.
 			// Example: If you expect a certain status condition after reconciliation, verify it here.

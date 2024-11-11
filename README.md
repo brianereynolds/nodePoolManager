@@ -1,51 +1,29 @@
 # nodepoolmanager
-// TODO(user): Add simple overview of use/purpose
+Node Pool Manager is used to create, update and delete node pools on an AKS cluster.
 
 ## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+Some applications cannot take full advantage of the Kubernetes high-availability concepts. This CRD has been designed to manage the node pools that run application workloads.
+
+Based on the YAML you provide, the controller will bring the node pools to the state reflected in the configuration.
 
 ## Getting Started
 
 ### Prerequisites
-- go version v1.22.0+
-- docker version 17.03+.
-- kubectl version v1.11.3+.
-- Access to a Kubernetes v1.11.3+ cluster.
+- Access to a Azure Kubernetes Service 1.26+
+- A Managed Identity with AKS Contributor Role for the cluster
 
-### To Deploy on the cluster
-**Build and push your image to the location specified by `IMG`:**
-
-```sh
-make docker-build docker-push IMG=<some-registry>/nodepoolmanager:tag
+### Deployment
+Helm chart is recommended:
+```
+cd charts/nodepoolmanager
+helm install nodepoolmanager .
 ```
 
-**NOTE:** This image ought to be published in the personal registry you specified.
-And it is required to have access to pull the image from the working environment.
-Make sure you have the proper permission to the registry if the above commands don’t work.
-
-**Install the CRDs into the cluster:**
-
-```sh
-make install
+#### Verification
 ```
-
-**Deploy the Manager to the cluster with the image specified by `IMG`:**
-
-```sh
-make deploy IMG=<some-registry>/nodepoolmanager:tag
+helm list --filter 'nodepoolmanager' 
+kubectl get crd workloadmanagers.k8smanageers.greyridge.com
 ```
-
-> **NOTE**: If you encounter RBAC errors, you may need to grant yourself cluster-admin
-privileges or be logged in as admin.
-
-**Create instances of your solution**
-You can apply the samples (examples) from the config/sample:
-
-```sh
-kubectl apply -k config/samples/
-```
-
->**NOTE**: Ensure that the samples has default values to test it out.
 
 ### To Uninstall
 **Delete the instances (CRs) from the cluster:**
