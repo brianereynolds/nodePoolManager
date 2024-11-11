@@ -18,7 +18,6 @@ package controller
 
 import (
 	"context"
-	"github.com/davecgh/go-spew/spew"
 	"testing"
 
 	. "github.com/onsi/ginkgo/v2"
