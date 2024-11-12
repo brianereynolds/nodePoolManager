@@ -33,6 +33,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Helmify
+        run: |
+          make helm
+
       - name: Build Chart
         working-directory: charts/nodepoolmanager
         run: |
