@@ -26,6 +26,9 @@ jobs:
 
       - name: Helm Upload
         working-directory: charts/nodepoolmanager
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
         run: |
           az storage blob upload --container-name helm --file index.yaml --name index.yaml
           az storage blob upload --container-name helm --file *.tgz --name *.tgz
