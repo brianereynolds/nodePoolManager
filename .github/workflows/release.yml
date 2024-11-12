@@ -22,6 +22,7 @@ jobs:
         run: |
           curl https://k8smanagers.blob.core.windows.net/helm/index.yaml > index-temp.yaml
           helm repo index --url https://k8smanagers.blob.core.windows.net/helm/ . --merge index-temp.yaml
+          mv -f index-temp.yaml index.yaml
 
       - name: Helm Upload
         working-directory: charts/nodepoolmanager
