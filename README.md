@@ -13,20 +13,24 @@ Based on the YAML you provide, the controller will bring the node pools to the s
 - A Managed Identity with AKS Contributor Role for the cluster
 
 ### Deployment
-Helm chart is recommended:
+Helm chart :
 ```
-cd charts/nodepoolmanager
-helm install nodepoolmanager .
+kubectl create ns operations
+helm repo add k8smanagers https://k8smanagers.blob.core.windows.net/helm/
+helm install nodepoolmanager k8smanagers/nodepoolmanager -n operations
 ```
 
 #### Verification
 ```
-helm list --filter 'nodepoolmanager' 
-kubectl get crd nodepoolmanager.k8smanagers.greyridge.com
+helm list --filter 'nodepoolmanager' -n operations
+kubectl get crd nodepoolmanagers.k8smanagers.greyridge.com
 ```
 
 ### Uninstall
 Uninstall the helm chart
+```
+helm uninstall -n operations nodepoolmanager
+```
 
 ## License
 
