@@ -36,6 +36,7 @@ jobs:
       - name: Helmify
         run: |
           make helm
+          cp README.md charts/nodepoolmanager/
 
       - name: Build Chart
         working-directory: charts/nodepoolmanager
