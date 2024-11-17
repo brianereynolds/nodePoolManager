@@ -33,9 +33,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Helmify
+      - name: Helm doc
         run: |
-          make helm
           cp README.md charts/nodepoolmanager/
 
       - name: Build Chart
