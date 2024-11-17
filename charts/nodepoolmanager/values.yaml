@@ -23,6 +23,8 @@ controllerManager:
   replicas: 1
   serviceAccount:
     annotations: {}
+  deployment:
+    env:
 imagePullSecrets: []
 kubernetesClusterDomain: cluster.local
 metricsService:
