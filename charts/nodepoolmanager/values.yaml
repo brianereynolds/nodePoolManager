@@ -16,10 +16,12 @@ controllerManager:
     resources:
       limits:
         cpu: 500m
-        memory: 128Mi
+        memory: 1Gi
       requests:
         cpu: 10m
         memory: 64Mi
+  nodeSelector:
+    kubernetes.azure.com/mode: system
   replicas: 1
   serviceAccount:
     annotations: {}
