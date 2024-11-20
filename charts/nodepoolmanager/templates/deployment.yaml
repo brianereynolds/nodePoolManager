@@ -5,6 +5,9 @@ metadata:
   labels:
     control-plane: controller-manager
   {{- include "nodepoolmanager.labels" . | nindent 4 }}
+  {{- with .Values.controllerManager.deployment.customLabels }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.controllerManager.replicas }}
   selector:

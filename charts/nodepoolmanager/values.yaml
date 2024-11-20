@@ -25,6 +25,7 @@ controllerManager:
     annotations: {}
   deployment:
     env:
+    customLabels:
 imagePullSecrets: []
 kubernetesClusterDomain: cluster.local
 metricsService:
