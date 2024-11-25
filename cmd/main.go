@@ -20,6 +20,7 @@ import (
 	"crypto/tls"
 	"flag"
 	"os"
+	"strconv"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
@@ -69,8 +70,16 @@ func main() {
 		"If set, the metrics endpoint is served securely via HTTPS. Use --metrics-secure=false to use HTTP instead.")
 	flag.BoolVar(&enableHTTP2, "enable-http2", false,
 		"If set, HTTP/2 will be enabled for the metrics and webhook servers")
+
+	debugLoggingEnv := os.Getenv("DEBUG_LOGGING")
+	var debugLogging = false
+	if debugLoggingEnv == "1" {
+		setupLog.Info("DEBUG_LOGGING enabled")
+		debugLogging, _ = strconv.ParseBool(debugLoggingEnv)
+	}
+
 	opts := zap.Options{
-		Development: true,
+		Development: debugLogging,
 	}
 	opts.BindFlags(flag.CommandLine)
 	flag.Parse()
