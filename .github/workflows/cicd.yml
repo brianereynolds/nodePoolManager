@@ -23,8 +23,11 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
+          context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/node-pool-manager:latest
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/node-pool-manager:${{ github.ref_name }}
+            ${{ secrets.DOCKER_USERNAME }}/node-pool-manager:latest
   helm-upload:
     permissions:
       contents: write
