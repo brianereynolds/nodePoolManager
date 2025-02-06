@@ -222,5 +222,29 @@ var _ = Describe("NodePoolManager Controller", func() {
 			Expect(err).To(HaveOccurred())
 			Expect(err).To(MatchError(coreerrors.New("version numbers must be of the format V.v.n")))
 		})
+
+		It("Negative Test: Create NP without properties", func() {
+			resource := &k8smanagersv1.NodePoolManager{}
+			err := k8sClient.Get(ctx, typeNamespacedName, resource)
+			Expect(err).NotTo(HaveOccurred())
+
+			np := k8smanagersv1.NodePool{
+				Name: "testnp",
+			}
+			resource.Spec.NodePools = append(resource.Spec.NodePools, np)
+
+			controllerReconciler := &NodePoolManagerReconciler{
+				Client: k8sClient,
+				Scheme: k8sClient.Scheme(),
+			}
+			Expect(k8sClient.Update(ctx, resource)).To(Succeed())
+
+			// Create NP
+			_, err = controllerReconciler.Reconcile(ctx, reconcile.Request{
+				NamespacedName: typeNamespacedName,
+			})
+			Expect(err).To(HaveOccurred())
+			Expect(err).To(MatchError(coreerrors.New("nodepool[].properties.VMSize is mandatory when creating node pools")))
+		})
 	})
 })
