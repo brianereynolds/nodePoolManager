@@ -37,7 +37,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/node-pool-manager:{{ env.IMAGE_TAG }}
+            ${{ secrets.DOCKER_USERNAME }}/node-pool-manager:${{ env.IMAGE_TAG }}
 
   helm-upload:
     permissions:
