@@ -27,6 +27,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
 	"github.com/brianereynolds/k8smanagers_utils"
 	k8smanagersv1 "greyridge.com/nodePoolManager/api/v1"
+	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -479,8 +480,12 @@ func (r *NodePoolManagerReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 
 	var npManager k8smanagersv1.NodePoolManager
 	if err := r.Get(ctx, req.NamespacedName, &npManager); err != nil {
-		l.Info("No NP manager config found")
-		return ctrl.Result{}, nil
+		if k8serrors.IsNotFound(err) {
+			// Resource was deleted, clean up and exit reconciliation
+			l.Info("Exit Reconcile - No NP manager config found")
+			return ctrl.Result{}, nil
+		}
+		return ctrl.Result{}, err
 	}
 
 	requeue := npManager.Spec.RetryOnError
