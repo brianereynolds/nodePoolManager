@@ -407,7 +407,7 @@ func (r *NodePoolManagerReconciler) validate(ctx context.Context, npManager *k8s
 		np := npManager.Spec.NodePools[i]
 
 		if np.Action == k8smanagersv1.Create {
-			if *np.Props.VMSize == "" {
+			if np.Props.VMSize == nil || *np.Props.VMSize == "" {
 				err := errors.New("nodepool[].properties.VMSize is mandatory when creating node pools")
 				l.Error(err, "Validation failed")
 				return err
